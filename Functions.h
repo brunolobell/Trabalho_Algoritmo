@@ -39,32 +39,30 @@ class Graph{
     std::vector <Node> Nodes;
 
   public:
-    Graph(int Number_Edges, int Number_Nodes){ // Default values -- Inicialize in 0
+    Graph(int Number_Edges = 0, int Number_Nodes = 0){ // Default values -- Inicialize in 0
       Number_Edges = 0;
       Number_Nodes = 0;
     }
 
-    void ShowGraph(){ 
-      for(int i = 0; i < Nodes.size(); i++) // Take all nodes and show
-        Nodes[i].ShowNode();
+    int getNumber_Edges(){ // Return Number Edges
+      return Number_Edges;
     }
 
-    void setEdges(){  // Increment Number of Edges
-      Number_Edges++;
+    int getNumber_Nodes(){ // Return Number Nodes
+      return Number_Nodes;
     }
 
-    void setNodes(){ // Increment Number of Nodes
-      Number_Nodes++;
-    }
+    void Insert_Node(); // Function Insert Node
+
+    void Insert_Edge(int Node1, int Node2); // Function Insert Edge
+
+    int Remove_Node(int Node_Remove); // Function Remove Node
+
+    void Remove_Edge(int Node_Remove); // Function Remove Edge
+
+    void ShowGraph();
+
+    void setEdges();  // Increment Number of Edges
+
+    void setNodes(Node New_Node); // Increment Number of Nodes    
 };
-
-
-void Insert_Node();
-
-void Insert_Edge(int Node1, int Node2);
-
-int Remove_Node(int Node_Remove);
-
-void Remove_Edge(int Node_Remove);
-
-void Show_Graph();

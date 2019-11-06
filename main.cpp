@@ -2,14 +2,18 @@
 #include <vector>
 #include "Functions.h"
 
+
 int main(int argc, char const *argv[])
 {
+  Graph Graph_;
   int case_,Count = 0;
   for(;;){
+    std::cout << "Escolha um seu merda: " << std::endl;
+    std::cin >> case_;
     switch (case_)
     {
       case 1:
-        Insert_Node(New_Node); 
+        Graph_.Insert_Node(); 
         break;
 
       case 2:
@@ -25,12 +29,12 @@ int main(int argc, char const *argv[])
         break;
       
       case 5:
-          
+        Graph_.ShowGraph();  
         break;
 
       default:
         break;
     }
-
+  }
   return 0;
 }
