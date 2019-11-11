@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 project(Trab_AED)
 
-add_executable(Graph main.cpp)
+add_executable(Graph main.cpp Functions.cpp)
 
-include_directories(./Functions.h)
+include_directories(Functions.h)

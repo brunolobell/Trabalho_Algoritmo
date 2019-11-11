@@ -8,28 +8,15 @@ class Node{
     std::vector <Node> connections;
   
   public:
-    Node(int value = 0){ // Default value -- Inicialize in 0
-      value = 0;
+    Node(int val = 0){ // Default value -- Inicialize in 0
+      value = val;
     }
 
-    void ShowNode(){
-      std::cout << value << "-->"; // Show node value
-      for(int i = 0; i < connections.size(); i++){ // Show connections node value   
-        if(i < connections.size())
-          std::cout << connections[i].value << "-->";
-        else
-          std::cout << connections[i].value;        
-      }
-      std::cout << std::endl;
-    }
+    void ShowNode();
 
-    void setValue(){ // Increment default value
-      value++;
-    }
+    void setValue(); // Increment default value
 
-    void setConnection(Node node){ // Connections with node
-      connections.push_back(node);
-    } 
+    void setConnection(Node node); // Connections with node 
 };
 
 class Graph{
@@ -37,11 +24,12 @@ class Graph{
     int Number_Edges;
     int Number_Nodes;
     std::vector <Node> Nodes;
+    std::vector <std::vector <int>> Matrix_Adjacent;
 
   public:
-    Graph(int Number_Edges = 0, int Number_Nodes = 0){ // Default values -- Inicialize in 0
-      Number_Edges = 0;
-      Number_Nodes = 0;
+    Graph(int Edges = 0, int Nodes = 0){ // Default values -- Inicialize in 0
+      Number_Edges = Edges;
+      Number_Nodes = Nodes;
     }
 
     int getNumber_Edges(){ // Return Number Edges
@@ -60,9 +48,5 @@ class Graph{
 
     void Remove_Edge(int Node_Remove); // Function Remove Edge
 
-    void ShowGraph();
-
-    void setEdges();  // Increment Number of Edges
-
-    void setNodes(Node New_Node); // Increment Number of Nodes    
+    void ShowGraph();    
 };
