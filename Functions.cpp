@@ -2,13 +2,15 @@
 
 
 void Node::ShowNode(){ 
-  std::cout << value << "-->"; // Show node value
+  std::cout << value << " --> "; // Show node value
   for(int i = 0; i < connections.size(); i++){ // Show connections node value   
     if(i < connections.size() - 1)
       std::cout << connections[i].value << " --> ";
     else
-      std::cout << connections[i].value << " /";        
+      std::cout << connections[i].value << " --> /";        
   }
+  if(connections.size() < 1)
+    std::cout << " /";
   std::cout << std::endl;
 }
 
@@ -27,22 +29,20 @@ void Graph::ShowGraph(){
   std::cout << std::endl;
 
   std::cout << "Matrix of Adjacent" << std::endl;
-  for(int i = 0; i < Number_Nodes; i++){
-    for(int j = 0; j < Number_Nodes; i++)
+  for(int i = 0; i < Number_Nodes; i++){ // Show Matrix of Adjacent
+    for(int j = 0; j < Number_Nodes; j++)
       std::cout << Matrix_Adjacent[i][j] << "\t";
     std::cout << std::endl;
   }
 }
 
 void Graph::Insert_Node(){
-  Node new_node; // Object Node 
-  Number_Nodes++; // Add Number Nodes
+  Node new_node(++Number_Nodes); // Object Node 
   Nodes.push_back(new_node); // Add New Node in Vector of Nodes
-  for(int i = 0; i < Number_Nodes; i++)
-    for(int j = 0; j < Number_Nodes; j++){
-      Matrix_Adjacent.resize(Number_Nodes);
-      Matrix_Adjacent[i].resize(Number_Nodes); // Insert 0 in Matrix positions
-    }
+  for(int i = 0; i < Number_Nodes; i++){
+    Matrix_Adjacent.resize(Number_Nodes); 
+    Matrix_Adjacent[i].resize(Number_Nodes);
+  }
 }
 
 void Graph::Insert_Edge(int Node1, int Node2){
