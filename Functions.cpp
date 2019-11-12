@@ -37,26 +37,31 @@ void Graph::ShowGraph(){
 }
 
 void Graph::Insert_Node(){
-  Node new_node(++Number_Nodes); // Object Node 
+  Node new_node(++Value); // Object Node 
   Nodes.push_back(new_node); // Add New Node in Vector of Nodes
-  for(int i = 0; i < Number_Nodes; i++){
-    Matrix_Adjacent.resize(Number_Nodes); 
-    Matrix_Adjacent[i].resize(Number_Nodes);
+  ++Number_Nodes;
+  for(int i = 0; i < Number_Nodes; i++){ // Create a Matrix of Adjacent
+    Matrix_Adjacent.resize(Number_Nodes); // Memory Allocation for Size of Number_Nodes 
+    Matrix_Adjacent[i].resize(Number_Nodes); // Vector Allocation for Size of Number_Nodes
   }
 }
 
 void Graph::Insert_Edge(int Node1, int Node2){
-  Number_Edges++;
-  if(Number_Nodes >= Node1 && Number_Nodes >= Node2){
-    Nodes[Node1].setConnection(Nodes[Node2]);
-    Matrix_Adjacent[Node1][Node2] = 1;
+  ++Number_Edges; //Increment Number_Edges
+  if(Number_Nodes >= Node1 && Number_Nodes >= Node2){ //If Node1 or Node2 > Number_Nodes
+    Nodes[Node1-1].setConnection(Nodes[Node2-1]); // Add Connection Node2 on Node1 in List Adjacent
+    Matrix_Adjacent[Node1-1][Node2-1] = 1; // Add Connection Node2 on Node1 in Matrix Adjacent
   }
 }
 
 int Graph::Remove_Node(int Node_Remove){
-
+  --Number_Nodes; //Reduces Number_Nodes
+  Nodes.erase(Nodes.begin()+Node_Remove-1); //Remove Node in position Node_Remove
+  Matrix_Adjacent.erase(Matrix_Adjacent.begin()+Node_Remove-1); //Remove Line Number Node_Remove 
+  for(int i = 0; i < Number_Nodes; i++) //Remove Column Number Node_Remove
+    Matrix_Adjacent[i].erase(Matrix_Adjacent[i].begin()+Node_Remove-1);
 }
 
-void Graph::Remove_Edge(int Node_Remove){
+void Graph::Remove_Edge(int Edge_Remove){
 
 }

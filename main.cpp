@@ -17,13 +17,13 @@ int main(int argc, char const *argv[])
         break;
 
       case 2:
-        std::cin >> x;
-        std::cin >> y;
+        std::cin >> x >> y;
         Graph_.Insert_Edge(x, y);
         break;
 
       case 3:
-          
+        std::cin >> x;
+        Graph_.Remove_Node(x);
         break;
       
       case 4:

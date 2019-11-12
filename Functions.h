@@ -23,13 +23,15 @@ class Graph{
   private:
     int Number_Edges;
     int Number_Nodes;
+    int Value;
     std::vector <Node> Nodes;
     std::vector <std::vector <int>> Matrix_Adjacent;
 
   public:
-    Graph(int Edges = 0, int Nodes = 0){ // Default values -- Inicialize in 0
+    Graph(int Edges = 0, int Nodes = 0, int Val = 0){ // Default values -- Inicialize in 0
       Number_Edges = Edges;
       Number_Nodes = Nodes;
+      Value = Val;
     }
 
     int getNumber_Edges(){ // Return Number Edges
