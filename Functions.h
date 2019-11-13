@@ -5,7 +5,8 @@
 class Node{ 
   private:
     int value;
-    std::vector <Node> connections;
+    std::vector <Node *> connections;
+    std::vector <Node> reverse_connections;
   
   public:
     Node(int val = 0){ // Default value -- Inicialize in 0
@@ -16,7 +17,13 @@ class Node{
 
     void setValue(); // Increment default value
 
-    void setConnection(Node node); // Connections with node 
+    void setConnection(Node* node); // Connections with node
+
+    void setReverseConnection(Node node); // Connection in Node
+
+    int getSizeReverseConnection(); // Take Size of Reverse Connections
+
+    int getValue(); 
 };
 
 class Graph{
@@ -46,7 +53,7 @@ class Graph{
 
     void Insert_Edge(int Node1, int Node2); // Function Insert Edge
 
-    int Remove_Node(int Node_Remove); // Function Remove Node
+    void Remove_Node(int Node_Remove); // Function Remove Node
 
     void Remove_Edge(int Node_Remove); // Function Remove Edge
 
