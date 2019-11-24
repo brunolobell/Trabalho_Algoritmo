@@ -22,16 +22,24 @@ void Node::setConnection(Node* node){ // Connections with node
   connections.push_back(node);
 }
 
-void Node::setReverseConnection(Node node){ // Connections in Node
-  reverse_connections.push_back(node);
-}
-
-int Node::getSizeReverseConnection(){
-  return reverse_connections.size();
-}
-
-int Node::getValue(){
+int Node::getValue(){ 
   return value;
+}
+
+void Node::RemoveLitterNode(int Node_){ // Remove Node of Adjacent List
+  int position = 0;
+  for(int i = 0; connections[i]->getValue() != Node_ && i < connections.size(); i++) // Take Posion Node
+    ++position; 
+
+  connections.erase(connections.begin()+position); // Remove Node
+}
+
+int Node::getSizeConnection(){ // Return Number of Connections
+  return connections.size();
+}
+
+int Node::getSizeReverseConnection(){ // Return Number of Connections in Node
+  return Reverse_Connections.size();
 }
 
 void Graph::ShowGraph(){
@@ -52,7 +60,7 @@ void Graph::Insert_Node(){
   Node new_node(++Value); // Object Node 
   Nodes.push_back(new_node); // Add New Node in Vector of Nodes
   ++Number_Nodes;
-  for(int i = 0; i < Number_Nodes; i++){ // Create a Matrix of Adjacent
+  for(int i = 0; i < Number_Nodes; i++){ // Create a Adjacency List
     Matrix_Adjacent.resize(Number_Nodes); // Memory Allocation for Size of Number_Nodes 
     Matrix_Adjacent[i].resize(Number_Nodes); // Vector Allocation for Size of Number_Nodes
   }
@@ -75,17 +83,46 @@ void Graph::Remove_Node(int Node_Remove){
       Position_Node_Remove = i;
 
   --Number_Nodes; //Reduces Number_Nodes
-  //for(int i = 0; i < Nodes[Position_Node_Remove].getSizeReverseConnection(); i++){
-
-  //}
-
   Nodes.erase(Nodes.begin()+Position_Node_Remove); //Remove Node in position Node_Remove
+  
   Matrix_Adjacent.erase(Matrix_Adjacent.begin()+Position_Node_Remove); //Remove Line Number Node_Remove 
   for(int i = 0; i < Number_Nodes; i++){ //Remove Column Number Node_Remove
     Matrix_Adjacent[i].erase(Matrix_Adjacent[i].begin()+Position_Node_Remove);
   }
 }
 
-void Graph::Remove_Edge(int Edge_Remove){
+void Graph::Remove_Edge(int Node1, int Node2){
+  int Position_Node;
 
+  for(int i = 0; i < Nodes.size(); i++) // Find Value 'Node_Value' in Vector Nodes
+    if(Node1 == Nodes[i].getValue()){
+      Position_Node = i;
+      break;
+    }
+
+  Matrix_Adjacent[Position_Node][Node2-1] = 0; // Add 0 in Position [Node1][Node2]
+
+  Nodes[Position_Node].RemoveLitterNode(Node2); // Remove Node Of Adjacent List
+}
+
+void Graph::getFonts(){
+  std::vector <int> Fonts;
+
+  for(int i = 0; i < Nodes.size(); i++)
+    if(Nodes[i].getSizeReverseConnection() == 0 && Nodes[i].getSizeConnection() > 0)
+      Fonts.push_back(i);
+
+  for(int i = 0; i < Fonts.size(); i++)
+    std::cout << Fonts[i] << "\t";
+}
+
+void Graph::getSinks(){
+  std::vector <int> Sinks;
+
+  for(int i = 0; i < Nodes.size(); i++)
+    if(Nodes[i].getSizeConnection() == 0 && Nodes[i].getSizeReverseConnection() > 0)
+      Sinks.push_back(i);
+
+  for(int i = 0; i < Sinks.size(); i++)
+    std::cout << Sinks[i] << "\t";
 }
