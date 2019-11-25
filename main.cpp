@@ -6,9 +6,13 @@
 int main(int argc, char const *argv[])
 {
   Graph Graph_;
-  int x,y, case_,Count = 0;
+  int x,y, case_, choice;
+
+  std::cout << "1 - Directed Graph \t 2 - Undirected Graph\n";
+  std::cin >> choice;
+
   while(case_ != 0){
-    std::cout << "Escolha: (1 - Insert Node, 2 - Insert Edge, 3 - Remove Node, 4 - Remove Edge, 5 - Show Graph, 0 - Exit)" << std::endl;
+    std::cout << "Escolha: (1 - Insert Node, 2 - Insert Edge, 3 - Remove Node, 4 - Remove Edge, 5 - Show Graph, 6 - Return Fonts, 7 - Return Sinks, 0 - Exit)" << std::endl;
     std::cin >> case_;
     switch (case_)
     {
@@ -18,7 +22,7 @@ int main(int argc, char const *argv[])
 
       case 2:
         std::cin >> x >> y;
-        Graph_.Insert_Edge(x, y);
+        Graph_.Insert_Edge(x, y, choice);
         break;
 
       case 3:
@@ -28,7 +32,7 @@ int main(int argc, char const *argv[])
       
       case 4:
         std::cin >> x >> y;
-        Graph_.Remove_Edge(x,y);
+        Graph_.Remove_Edge(x,y,choice);
         break;
       
       case 5:

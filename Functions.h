@@ -1,12 +1,13 @@
 #include <iostream>
 #include <vector>
+#include <map>
 
 
 class Node{ 
   private:
     int value;
-    std::vector <Node *> connections;
-    std::vector <Node *> Reverse_Connections;
+    std::map <int, Node *> connections;
+    std::map <int, Node *> Reverse_Connections;
 
   public:
     Node(int val = 0){ // Default value -- Inicialize in 0
@@ -19,14 +20,15 @@ class Node{
 
     void setConnection(Node* node); // Connections with node
 
-    void RemoveLitterNode(int Node_);
+    void setReverseConnection(Node* node); // Connections with node
+
+    void RemoveLitterNode(int Node_); // Remove Vertices of Node
     
     int getSizeReverseConnection(); // Take Size of Reverse Connections
 
     int getSizeConnection(); // Take Size of Connections
 
     int getValue(); // Return Value Name
- 
 };
 
 
@@ -55,11 +57,11 @@ class Graph{
 
     void Insert_Node(); // Function Insert Node
 
-    void Insert_Edge(int Node1, int Node2); // Function Insert Edge
+    void Insert_Edge(int Node1, int Node2, int choose); // Function Insert Edge
 
     void Remove_Node(int Node_Remove); // Function Remove Node
 
-    void Remove_Edge(int Node1,int Node2); // Function Remove Edge
+    void Remove_Edge(int Node1,int Node2, int choice); // Function Remove Edge
 
     void ShowGraph();
 

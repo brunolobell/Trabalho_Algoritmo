@@ -3,15 +3,11 @@
 
 void Node::ShowNode(){ 
   std::cout << value << " --> "; // Show node value
-  for(int i = 0; i < connections.size(); i++){ // Show connections node value   
-    if(i < connections.size() - 1)
-      std::cout << connections[i]->value << " --> ";
-    else
-      std::cout << connections[i]->value << " --> /";        
-  }
-  if(connections.size() < 1)  // None Node
-    std::cout << " /";
-  std::cout << std::endl;
+  
+  for(auto elem : connections) // Show connections node value   
+    std::cout << elem.second->value << " --> ";
+
+  std::cout << " /" << std::endl;
 }
 
 void Node::setValue(){
@@ -19,7 +15,11 @@ void Node::setValue(){
 }
 
 void Node::setConnection(Node* node){ // Connections with node
-  connections.push_back(node);
+  connections.insert(std::pair<int, Node *>(value, node));
+}
+
+void Node::setReverseConnection(Node* node){ // Connections with node
+  Reverse_Connections.insert(std::pair<int, Node *>(value, node));
 }
 
 int Node::getValue(){ 
@@ -27,11 +27,7 @@ int Node::getValue(){
 }
 
 void Node::RemoveLitterNode(int Node_){ // Remove Node of Adjacent List
-  int position = 0;
-  for(int i = 0; connections[i]->getValue() != Node_ && i < connections.size(); i++) // Take Posion Node
-    ++position; 
-
-  connections.erase(connections.begin()+position); // Remove Node
+  connections.erase(Node_); // Remove Node
 }
 
 int Node::getSizeConnection(){ // Return Number of Connections
@@ -41,6 +37,7 @@ int Node::getSizeConnection(){ // Return Number of Connections
 int Node::getSizeReverseConnection(){ // Return Number of Connections in Node
   return Reverse_Connections.size();
 }
+
 
 void Graph::ShowGraph(){
   std::cout << "List of Adjacent" << std::endl;
@@ -66,12 +63,19 @@ void Graph::Insert_Node(){
   }
 }
 
-void Graph::Insert_Edge(int Node1, int Node2){
+void Graph::Insert_Edge(int Node1, int Node2, int choose){
   ++Number_Edges; //Increment Number_Edges
-  if(Number_Nodes >= Node1 && Number_Nodes >= Node2){ //If Node1 or Node2 > Number_Nodes
+  if(Number_Nodes >= Node1 && Number_Nodes >= Node2 && choose == 1){ //If Node1 or Node2 > Number_Nodes
     Nodes[Node1-1].setConnection(&Nodes[Node2-1]); // Add Connection Node2 on Node1 in List Adjacent
     Matrix_Adjacent[Node1-1][Node2-1] = 1; // Add Connection Node2 on Node1 in Matrix Adjacent
-    //Nodes[Node2-1].setReverseConnection(Node1-1); // Add Reverse Connection Node1 in Node2
+    Nodes[Node2-1].setReverseConnection(&Nodes[Node1-1]); // Add Reverse Connection Node1 in Node2
+  }
+
+  if(Number_Nodes >= Node1 && Number_Nodes >= Node2 && choose == 2){ //If Node1 or Node2 > Number_Nodes
+    Nodes[Node1-1].setConnection(&Nodes[Node2-1]); // Add Connection Node2 on Node1 in List Adjacent
+    Matrix_Adjacent[Node1-1][Node2-1] = 1; // Add Connection Node2 on Node1 in Matrix Adjacent
+    Matrix_Adjacent[Node2-1][Node1-1] = 1; // Add Connection Node1 on Node2 in Matrix Adjacent
+    Nodes[Node2-1].setConnection(&Nodes[Node1-1]); // Add Reverse Connection Node1 in Node2
   }
 }
 
@@ -91,7 +95,7 @@ void Graph::Remove_Node(int Node_Remove){
   }
 }
 
-void Graph::Remove_Edge(int Node1, int Node2){
+void Graph::Remove_Edge(int Node1, int Node2, int choice){
   int Position_Node;
 
   for(int i = 0; i < Nodes.size(); i++) // Find Value 'Node_Value' in Vector Nodes
@@ -101,28 +105,53 @@ void Graph::Remove_Edge(int Node1, int Node2){
     }
 
   Matrix_Adjacent[Position_Node][Node2-1] = 0; // Add 0 in Position [Node1][Node2]
-
   Nodes[Position_Node].RemoveLitterNode(Node2); // Remove Node Of Adjacent List
+
+  if(choice == 2){
+    for(int i = 0; i < Nodes.size(); i++) // Find Value 'Node_Value' in Vector Nodes
+    if(Node2 == Nodes[i].getValue()){
+      Position_Node = i;
+      break;
+    }
+
+    Matrix_Adjacent[Position_Node][Node1-1] = 0;
+    Nodes[Position_Node].RemoveLitterNode(Node1);
+  }
 }
 
-void Graph::getFonts(){
+void Graph::getFonts(){ // Return All Fonts 
   std::vector <int> Fonts;
 
-  for(int i = 0; i < Nodes.size(); i++)
+  for(int i = 0; i < Nodes.size(); i++) // Search for Nodes That Are Sources 
     if(Nodes[i].getSizeReverseConnection() == 0 && Nodes[i].getSizeConnection() > 0)
-      Fonts.push_back(i);
+      Fonts.push_back(Nodes[i].getValue());
 
-  for(int i = 0; i < Fonts.size(); i++)
-    std::cout << Fonts[i] << "\t";
+  for(int i = 0; i < Fonts.size(); i++){ // Show Sources 
+    if(Fonts.size() > 1 && i < Fonts.size()-1)
+      std::cout << Fonts[i] << "\t";
+    
+    else
+      std::cout << Fonts[i];
+  }
+  std::cout << std::endl;
 }
 
-void Graph::getSinks(){
+void Graph::getSinks(){ // Return All Sinks 
   std::vector <int> Sinks;
 
-  for(int i = 0; i < Nodes.size(); i++)
-    if(Nodes[i].getSizeConnection() == 0 && Nodes[i].getSizeReverseConnection() > 0)
-      Sinks.push_back(i);
+  std::cout << Nodes[1].getSizeReverseConnection() << std::endl;
 
-  for(int i = 0; i < Sinks.size(); i++)
-    std::cout << Sinks[i] << "\t";
+  for(int i = 0; i < Nodes.size(); i++) // Search for Nodes That Are Sinks
+    if(Nodes[i].getSizeConnection() == 0 && Nodes[i].getSizeReverseConnection() > 0)
+      Sinks.push_back(Nodes[i].getValue());
+
+  for(int i = 0; i < Sinks.size(); i++){ // Show Sinks
+    if(Sinks.size() > 1 && i < Sinks.size()-1)
+      std::cout << Sinks[i] << "\t";
+    
+    else
+      std::cout << Sinks[i];
+
+    std::cout << std::endl;    
+  }
 }
