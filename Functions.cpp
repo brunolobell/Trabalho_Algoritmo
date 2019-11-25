@@ -4,8 +4,9 @@
 void Node::ShowNode(){ 
   std::cout << value << " --> "; // Show node value
   
-  for(auto elem : connections) // Show connections node value   
-    std::cout << elem.second->value << " --> ";
+  for(auto it = connections.begin(); it != connections.end(); ++it){ // Show connections node value   
+    std::cout << it->second->getValue() << " --> ";
+  }
 
   std::cout << " /" << std::endl;
 }
@@ -15,7 +16,7 @@ void Node::setValue(){
 }
 
 void Node::setConnection(Node* node){ // Connections with node
-  connections.insert(std::pair<int, Node *>(value, node));
+  connections.insert(std::pair<int, Node *>(node->value, node));
 }
 
 void Node::setReverseConnection(Node* node){ // Connections with node
@@ -53,29 +54,50 @@ void Graph::ShowGraph(){
   }
 }
 
-void Graph::Insert_Node(){
-  Node new_node(++Value); // Object Node 
-  Nodes.push_back(new_node); // Add New Node in Vector of Nodes
-  ++Number_Nodes;
-  for(int i = 0; i < Number_Nodes; i++){ // Create a Adjacency List
-    Matrix_Adjacent.resize(Number_Nodes); // Memory Allocation for Size of Number_Nodes 
-    Matrix_Adjacent[i].resize(Number_Nodes); // Vector Allocation for Size of Number_Nodes
+void Graph::Insert_Node(int n){
+  for(int i = 0; i < n; i++){
+    Node new_node(++Value); // Object Node 
+    Nodes.push_back(new_node); // Add New Node in Vector of Nodes
+    ++Number_Nodes;
+    for(int i = 0; i < Number_Nodes; i++){ // Create a Adjacency List
+      Matrix_Adjacent.resize(Number_Nodes); // Memory Allocation for Size of Number_Nodes 
+      Matrix_Adjacent[i].resize(Number_Nodes); // Vector Allocation for Size of Number_Nodes
+    }
   }
 }
 
-void Graph::Insert_Edge(int Node1, int Node2, int choose){
-  ++Number_Edges; //Increment Number_Edges
-  if(Number_Nodes >= Node1 && Number_Nodes >= Node2 && choose == 1){ //If Node1 or Node2 > Number_Nodes
-    Nodes[Node1-1].setConnection(&Nodes[Node2-1]); // Add Connection Node2 on Node1 in List Adjacent
-    Matrix_Adjacent[Node1-1][Node2-1] = 1; // Add Connection Node2 on Node1 in Matrix Adjacent
-    Nodes[Node2-1].setReverseConnection(&Nodes[Node1-1]); // Add Reverse Connection Node1 in Node2
-  }
+void Graph::Insert_Edge(int Node1, int choose){
+  int Position_Node1, Position_Node2, Node2;
+  
+  std::cout << "0 for Exit" << std::endl;
 
-  if(Number_Nodes >= Node1 && Number_Nodes >= Node2 && choose == 2){ //If Node1 or Node2 > Number_Nodes
-    Nodes[Node1-1].setConnection(&Nodes[Node2-1]); // Add Connection Node2 on Node1 in List Adjacent
-    Matrix_Adjacent[Node1-1][Node2-1] = 1; // Add Connection Node2 on Node1 in Matrix Adjacent
-    Matrix_Adjacent[Node2-1][Node1-1] = 1; // Add Connection Node1 on Node2 in Matrix Adjacent
-    Nodes[Node2-1].setConnection(&Nodes[Node1-1]); // Add Reverse Connection Node1 in Node2
+  while(std::cin >> Node2 && Node2 != 0){
+    ++Number_Edges; //Increment Number_Edges
+
+    for(int i = 0; i < Nodes.size(); i++){ // Find Value 'Node_Value' in Vector Nodes
+      if(Node1 == Nodes[i].getValue())
+        Position_Node1 = i;
+      
+      if(Node2 == Nodes[i].getValue())
+        Position_Node2 = i;
+    }
+    
+    if(Number_Nodes >= Node1 && Number_Nodes >= Node2 && choose == 1){ //If Node1 or Node2 > Number_Nodes
+      Nodes[Position_Node1].setConnection(&Nodes[Position_Node2]); // Add Connection Node2 on Node1 in List Adjacent
+      Nodes[Position_Node2].setReverseConnection(&Nodes[Position_Node1]); // Add Reverse Connection Node1 in Node2
+
+      Matrix_Adjacent[Position_Node1][Position_Node2] = 1; // Add Connection Node2 on Node1 in Matrix Adjacent
+    }
+
+    if(Number_Nodes >= Node1 && Number_Nodes >= Node2 && choose == 2){ //If Node1 or Node2 > Number_Nodes
+      Nodes[Position_Node1].setConnection(&Nodes[Position_Node2]); // Add Connection Node2 on Node1 in List Adjacent
+      Nodes[Position_Node2].setConnection(&Nodes[Position_Node1]); // Add Reverse Connection Node1 in Node2
+      Nodes[Position_Node2].setReverseConnection(&Nodes[Position_Node1]); // Add Reverse Connection Node1 in Node2
+      Nodes[Position_Node1].setReverseConnection(&Nodes[Position_Node2]); // Add Reverse Connection Node2 in Node1
+
+      Matrix_Adjacent[Position_Node1][Node2-1] = 1; // Add Connection Node2 on Node1 in Matrix Adjacent
+      Matrix_Adjacent[Position_Node2][Node1-1] = 1; // Add Connection Node1 on Node2 in Matrix Adjacent
+    }
   }
 }
 
@@ -126,32 +148,52 @@ void Graph::getFonts(){ // Return All Fonts
     if(Nodes[i].getSizeReverseConnection() == 0 && Nodes[i].getSizeConnection() > 0)
       Fonts.push_back(Nodes[i].getValue());
 
+  std::cout << "Fonts: ";
   for(int i = 0; i < Fonts.size(); i++){ // Show Sources 
     if(Fonts.size() > 1 && i < Fonts.size()-1)
-      std::cout << Fonts[i] << "\t";
+      std::cout << Fonts[i] << " ";
     
     else
       std::cout << Fonts[i];
   }
-  std::cout << std::endl;
+
+  if(Fonts.size() > 0)
+    std::cout << std::endl;
+  
+  else
+    std::cout << "Empty" << std::endl;  
 }
 
 void Graph::getSinks(){ // Return All Sinks 
   std::vector <int> Sinks;
 
-  std::cout << Nodes[1].getSizeReverseConnection() << std::endl;
-
   for(int i = 0; i < Nodes.size(); i++) // Search for Nodes That Are Sinks
     if(Nodes[i].getSizeConnection() == 0 && Nodes[i].getSizeReverseConnection() > 0)
       Sinks.push_back(Nodes[i].getValue());
 
+  std::cout << "Sinks: ";
   for(int i = 0; i < Sinks.size(); i++){ // Show Sinks
     if(Sinks.size() > 1 && i < Sinks.size()-1)
-      std::cout << Sinks[i] << "\t";
+      std::cout << Sinks[i] << " ";
     
     else
-      std::cout << Sinks[i];
-
-    std::cout << std::endl;    
+      std::cout << Sinks[i];    
   }
+
+  if(Sinks.size() > 0)
+    std::cout << std::endl;
+  
+  else
+    std::cout << "Empty" << std::endl;
+}
+
+void Graph::getDegreeNode(int node_){
+  int Position_Node;
+  
+  for(int i = 0; i < Nodes.size(); i++) // Find Value 'Node_Value' in Vector Nodes
+    if(node_ == Nodes[i].getValue())
+      Position_Node = i;
+
+  std::cout << "Entry Degree: " << Nodes[Position_Node].getSizeConnection() << std::endl;
+  std::cout << "Output Degree: " << Nodes[Position_Node].getSizeReverseConnection() << std::endl;
 }

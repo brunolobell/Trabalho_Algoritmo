@@ -55,9 +55,9 @@ class Graph{
       return Number_Nodes;
     }
 
-    void Insert_Node(); // Function Insert Node
+    void Insert_Node(int n); // Function Insert Node
 
-    void Insert_Edge(int Node1, int Node2, int choose); // Function Insert Edge
+    void Insert_Edge(int Node1, int choose); // Function Insert Edge
 
     void Remove_Node(int Node_Remove); // Function Remove Node
 
@@ -67,5 +67,7 @@ class Graph{
 
     void getFonts(); // Show Fonts
 
-    void getSinks(); // Show Sinks    
+    void getSinks(); // Show Sinks
+
+    void getDegreeNode(int node_); // Retunr Degree of Node    
 };

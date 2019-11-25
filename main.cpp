@@ -17,12 +17,15 @@ int main(int argc, char const *argv[])
     switch (case_)
     {
       case 1:
-        Graph_.Insert_Node(); 
+        std::cout << "Number of Nodes: ";
+        std::cin >> x;
+        Graph_.Insert_Node(x); 
         break;
 
       case 2:
-        std::cin >> x >> y;
-        Graph_.Insert_Edge(x, y, choice);
+        std::cout << "Choice Node For Connections: "; 
+        std::cin >> x;
+        Graph_.Insert_Edge(x, choice);
         break;
 
       case 3:
@@ -47,6 +50,11 @@ int main(int argc, char const *argv[])
         Graph_.getSinks();
         break;
 
+      case 8:
+        std::cout << "Node: ";
+        std::cin >> x;
+        Graph_.getDegreeNode(x);
+        break;
       default:
         break;
     }
