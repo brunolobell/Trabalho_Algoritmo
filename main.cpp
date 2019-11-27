@@ -6,13 +6,17 @@
 int main(int argc, char const *argv[])
 {
   Graph Graph_;
-  int x,y, case_, choice;
+  int x,y, case_ = 1, choice, weight;
+  char yn;
+
+  std::cout << "Weight? y/n ";
+  std::cin >> yn;
 
   std::cout << "1 - Directed Graph \t 2 - Undirected Graph\n";
   std::cin >> choice;
 
   while(case_ != 0){
-    std::cout << "Escolha: (1 - Insert Node, 2 - Insert Edge, 3 - Remove Node, 4 - Remove Edge, 5 - Show Graph, 6 - Return Fonts, 7 - Return Sinks, 0 - Exit)" << std::endl;
+    std::cout << "Choose: (1 - Insert Node, 2 - Insert Edge, 3 - Remove Node, 4 - Remove Edge, 5 - Show Graph, 6 - Return Fonts, 7 - Return Sinks, 8 - Calculate Degrees, 9 - BFS, 10 - DFS, 11 - Prim, 12 - Kruskal, 0 - Exit)" << std::endl;
     std::cin >> case_;
     switch (case_)
     {
@@ -25,7 +29,7 @@ int main(int argc, char const *argv[])
       case 2:
         std::cout << "Choice Node For Connections: "; 
         std::cin >> x;
-        Graph_.Insert_Edge(x, choice);
+        Graph_.Insert_Edge(x, choice,yn);
         break;
 
       case 3:
@@ -55,6 +59,27 @@ int main(int argc, char const *argv[])
         std::cin >> x;
         Graph_.getDegreeNode(x);
         break;
+
+      case 9:
+        std::cout << "Start Node :";
+        std::cin >> x;
+        Graph_.BFS(x);
+        break;
+
+      case 10:
+        std::cout << "Start Node :";
+        std::cin >> x;
+        Graph_.DFS(x);
+        break;
+
+      case 11:
+        Graph_.primMST();
+        break;
+
+      case 12:
+        Graph_.kruskalMST();
+        break;
+
       default:
         break;
     }

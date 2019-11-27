@@ -6,7 +6,7 @@
 class Node{ 
   private:
     int value;
-    std::map <int, Node *> connections;
+    std::map <Node *, int> connections;
     std::map <int, Node *> Reverse_Connections;
 
   public:
@@ -18,7 +18,7 @@ class Node{
 
     void setValue(); // Increment default value
 
-    void setConnection(Node* node); // Connections with node
+    void setConnection(Node* node, int weigth); // Connections with node
 
     void setReverseConnection(Node* node); // Connections with node
 
@@ -28,7 +28,9 @@ class Node{
 
     int getSizeConnection(); // Take Size of Connections
 
-    int getValue(); // Return Value Name
+    int getValue(); // Return Value Name 
+
+    std::map<Node *,int> getConnections(); // Return Connections
 };
 
 
@@ -57,7 +59,7 @@ class Graph{
 
     void Insert_Node(int n); // Function Insert Node
 
-    void Insert_Edge(int Node1, int choose); // Function Insert Edge
+    void Insert_Edge(int Node1, int choose, char yn); // Function Insert Edge
 
     void Remove_Node(int Node_Remove); // Function Remove Node
 
@@ -69,5 +71,17 @@ class Graph{
 
     void getSinks(); // Show Sinks
 
-    void getDegreeNode(int node_); // Retunr Degree of Node    
+    void getDegreeNode(int node_); // Retunr Degree of Node
+
+    void BFS(int Node_); // Breadth First Search
+
+    void DFS(int v); // Depth First Search
+
+    void DFSResolution(int Node_, bool * visited); // Recursive Function TOP-DAWN
+
+    void primMST(); // Movimento sem Terra - Prim's Algorithm
+
+    void kruskalMST(); // Movimento sem Terra - Kruskal's Algorithm
+
+    void BellmanFord(int src);
 };
